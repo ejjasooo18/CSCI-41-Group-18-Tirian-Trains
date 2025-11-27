@@ -41,12 +41,14 @@ class Route(models.Model):
     destination = models.ForeignKey(
         Station,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='as_route_destinations'
     )
     origin = models.ForeignKey(
         Station,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='as_route_origins'
     )
 
     def __str__(self):
@@ -64,12 +66,14 @@ class Trip(models.Model):
     destination = models.ForeignKey(
         Station,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='as_trip_destinations'
     )
     origin = models.ForeignKey(
         Station,
         on_delete=models.SET_NULL,
-        null=True
+        null=True,
+        related_name='as_trip_origins'
     )
     trip_date = models.DateField(
         default=date.min
