@@ -21,7 +21,7 @@ CONDITION = {
     'excellent': 'Excellent'
 }
 
-no_symbols_except_dot = RegexValidator(r'^[0-9a-zA-Z.]*$',
+no_symbols_except_dot = RegexValidator(r'^[0-9a-zA-Z. ]*$',
                                        'No symbols are allowed except \".\".')
 model_format = RegexValidator(r'^[AS]-[0-9][0-9][0-9]$',
                               'Must follow the format \"A-###\" or \"S-###\".')
@@ -77,9 +77,7 @@ class Trip(models.Model):
         null=True,
         related_name='as_trip_origins'
     )
-    trip_date = models.DateField(
-        default=date.min
-    )
+    trip_date = models.DateField(default=date.min)
 
     def __str__(self):
         return 'T-' + str(self.pk)
@@ -95,18 +93,27 @@ class Customer(models.Model):
     middle_initial = models.CharField(max_length=10,
                                       default='P.',
                                       validators=[no_symbols_except_dot])
-    birth_date = models.CharField(default=date.min,
+    birth_date = models.DateField(default=date.min,
                                   null=True,
                                   blank=True)
     gender = models.CharField(max_length=1,
                               default='M',
                               choices=GENDER)
 
+    def __str__(self):
+        return f'{self.surname}, {self.given_name} {self.middle_initial}'
+
+    class Meta:
+        ordering = ['surname']
+
 
 class Ticket(models.Model):
     total_cost = models.PositiveIntegerField(default=0)
     date_booked = models.DateField(default=date.min)
     date_expiration = models.DateField(default=date.min)
+
+    def __str__(self):
+        return f'Ticket No. {self.pk} {self.date_booked}'
 
 
 class Train(models.Model):
@@ -123,6 +130,9 @@ class Train(models.Model):
     has_vending_machines = models.BooleanField(default=False)
     has_food_service = models.BooleanField(default=False)
 
+    def __str__(self):
+        return f'Train {self.pk}'
+
 
 class CrewMember(models.Model):
     surname = models.CharField(max_length=255,
@@ -135,6 +145,9 @@ class CrewMember(models.Model):
                                       default='P.',
                                       validators=[no_symbols_except_dot])
 
+    def __str__(self):
+        return f'{self.surname}, {self.given_name} {self.middle_initial}'
+
 
 class MaintenanceEvent(models.Model):
     event_date = models.DateField(default=date.min)
@@ -145,3 +158,10 @@ class MaintenanceEvent(models.Model):
                                  choices=CONDITION)
     train = models.ForeignKey(Train, on_delete=models.CASCADE)
     crew_member = models.ForeignKey(CrewMember, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return (f'{self.event_date}: {self.task} '
+                f'on {self.train} by {self.crew_member}')
+
+    class Meta:
+        ordering = ['-event_date']
