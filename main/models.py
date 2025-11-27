@@ -144,7 +144,7 @@ class Ticket(models.Model):
     trips = models.ManyToManyField(Trip)
 
     def __str__(self):
-        return f'Ticket No. {self.pk} {self.date_booked}'
+        return f'Ticket No. {self.pk} {self.date_booked} booked by {self.owner}'
 
 
 class CrewMember(models.Model):
