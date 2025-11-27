@@ -57,32 +57,6 @@ class Route(models.Model):
                 f'-> {self.destination.station_name}')
 
 
-class Trip(models.Model):
-    departure_time = models.TimeField()
-    arrival_time = models.TimeField()
-    duration = models.GeneratedField(
-        expression=models.F('departure_time')-models.F('arrival_time'),
-        output_field=models.DurationField(),
-        db_persist=True
-    )
-    destination = models.ForeignKey(
-        Station,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name='as_trip_destinations'
-    )
-    origin = models.ForeignKey(
-        Station,
-        on_delete=models.SET_NULL,
-        null=True,
-        related_name='as_trip_origins'
-    )
-    trip_date = models.DateField(default=date.min)
-
-    def __str__(self):
-        return 'T-' + str(self.pk)
-
-
 class Customer(models.Model):
     surname = models.CharField(max_length=255,
                                default='Rizal',
@@ -107,17 +81,6 @@ class Customer(models.Model):
         ordering = ['surname']
 
 
-class Ticket(models.Model):
-    total_cost = models.PositiveIntegerField(default=0)
-    date_booked = models.DateField(default=date.min)
-    date_expiration = models.DateField(default=date.min)
-    owner = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
-    trips = models.ManyToManyField(Trip)
-
-    def __str__(self):
-        return f'Ticket No. {self.pk} {self.date_booked}'
-
-
 class Train(models.Model):
     model = models.CharField(max_length=5,
                              default='S-000',
@@ -134,6 +97,53 @@ class Train(models.Model):
 
     def __str__(self):
         return f'Train {self.pk}'
+
+
+class Trip(models.Model):
+    departure_time = models.TimeField()
+    arrival_time = models.TimeField()
+    duration = models.GeneratedField(
+        expression=models.F('departure_time')-models.F('arrival_time'),
+        output_field=models.DurationField(),
+        db_persist=True
+    )
+    destination = models.ForeignKey(
+        Station,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='as_trip_destinations'
+    )
+    origin = models.ForeignKey(
+        Station,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name='as_trip_origins'
+    )
+    assigned_train = models.ForeignKey(
+        Train,
+        on_delete=models.SET_NULL,
+        null=True
+    )
+    trip_date = models.DateField(default=date.min)
+
+    def __str__(self):
+        return (f'{self.trip_date}: '
+                f'{self.origin.station_name} @ {self.departure_time} '
+                f'-> {self.destination.station_name} @ {self.arrival_time}')
+
+    class Meta:
+        ordering = ['-trip_date']
+
+
+class Ticket(models.Model):
+    total_cost = models.PositiveIntegerField(default=0)
+    date_booked = models.DateField(default=date.min)
+    date_expiration = models.DateField(default=date.min)
+    owner = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    trips = models.ManyToManyField(Trip)
+
+    def __str__(self):
+        return f'Ticket No. {self.pk} {self.date_booked}'
 
 
 class CrewMember(models.Model):
