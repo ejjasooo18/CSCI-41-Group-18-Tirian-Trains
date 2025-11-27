@@ -28,16 +28,17 @@ model_format = RegexValidator(r'^[AS]-[0-9][0-9][0-9]$',
 
 
 class Station(models.Model):
-    station_name = models.CharField(max_length=255)
+    station_name = models.CharField(max_length=255,
+                                    default='Unnamed Station')
 
     def __str__(self):
-        return 'S-' + self.pk
+        return f'S-{self.pk}: {self.station_name}'
 
 
 class Route(models.Model):
     price = models.PositiveIntegerField(default=0)
     travel_time = models.DurationField(default=timedelta(minutes=5))
-    route_type = models.CharField(default='INT', choices=ROUTE_TYPE)
+    route_type = models.CharField(default='LOC', choices=ROUTE_TYPE)
     destination = models.ForeignKey(
         Station,
         on_delete=models.SET_NULL,
@@ -52,7 +53,8 @@ class Route(models.Model):
     )
 
     def __str__(self):
-        return 'R-' + self.pk
+        return (f'R-{self.pk}: {self.origin.station_name} '
+                f'-> {self.destination.station_name}')
 
 
 class Trip(models.Model):
@@ -80,7 +82,7 @@ class Trip(models.Model):
     )
 
     def __str__(self):
-        return 'T-' + self.pk
+        return 'T-' + str(self.pk)
 
 
 class Customer(models.Model):
