@@ -124,6 +124,7 @@ class Trip(models.Model):
         on_delete=models.SET_NULL,
         null=True
     )
+    route = models.ForeignKey(Route, on_delete=models.SET_NULL, null=True)
     trip_date = models.DateField(default=date.min)
 
     def __str__(self):
