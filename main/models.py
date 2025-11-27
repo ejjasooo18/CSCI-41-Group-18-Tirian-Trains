@@ -58,7 +58,8 @@ class Trip(models.Model):
     arrival_time = models.TimeField()
     duration = models.GeneratedField(
         expression=models.F('departure_time')-models.F('arrival_time'),
-        output_field=models.DurationField()
+        output_field=models.DurationField(),
+        db_persist=True
     )
     destination = models.ForeignKey(
         Station,
