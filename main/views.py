@@ -43,9 +43,9 @@ def buy_ticket(request, trip_id):
         # 4. link the Trip (many-to-many)
         ticket.trips.add(trip)
 
-        return render(request, 'main/ticket_success.html', {'ticket': ticket})
+        return render(request, 'main/ticket_confirmation.html', {'ticket': ticket})
 
-    return render(request, 'main/buy_ticket_form.html', {'trip': trip})
+    return render(request, 'main/buy_ticket.html', {'trip': trip})
 
 @login_required
 def home(request):
