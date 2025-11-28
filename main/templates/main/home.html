@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard - Tirian Trains</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        .welcome-box { border: 2px solid #4CAF50; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
+        .next-trip { background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px auto; width: 50%; }
+        .action-btn { 
+            display: inline-block; padding: 15px 30px; margin: 10px; 
+            background-color: #008CBA; color: white; text-decoration: none; border-radius: 5px; font-size: 18px; 
+        }
+        .action-btn.buy { background-color: #4CAF50; }
+    </style>
+</head>
+<body>
+    <div class="welcome-box">
+        <h1>Hello, {{ user.first_name|default:user.username }}!</h1>
+        <p>Current Date: {% now "F j, Y" %}</p>
+    </div>
+
+    <!-- Next Trip Section -->
+    <div class="next-trip">
+        <h3>Your Next Trip</h3>
+        {% if next_trip %}
+            <p><strong>Date:</strong> {{ next_trip.trip_date }}</p>
+            <p><strong>Route:</strong> {{ next_trip.route }}</p>
+            <p><strong>Time:</strong> {{ next_trip.departure_time }}</p>
+        {% else %}
+            <p>You have no upcoming trips scheduled.</p>
+        {% endif %}
+    </div>
+
+    <!-- Action Buttons -->
+    <div>
+        <a href="{% url 'main:trip_list' %}" class="action-btn buy">Buy Tickets</a>
+        <a href="{% url 'main:my_trips' %}" class="action-btn">View Your Trips</a>
+    </div>
+    
+    <br>
+    <a href="{% url 'logout' %}">Logout</a>
+</body>
+</html>
