@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <title>Book Ticket</title>
+    <style>
+        .back-btn { background-color: #008CBA; color: white; padding: 10px; text-decoration: none; }
+    </style>
+</head>
 <body>
+    <a href="{% url 'main:trip_list' %}" class="back-btn">&larr; Back to Schedule</a>
+    <br><br>
+
     <h1>Book Your Ticket</h1>
     <h3>Trip Details: {{ trip }}</h3>
     <p>Price: {{ trip.route.price }} Lions</p>

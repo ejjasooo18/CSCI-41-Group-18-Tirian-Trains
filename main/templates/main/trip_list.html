@@ -7,9 +7,19 @@
         th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
         th { background-color: #f2f2f2; }
         .btn { background-color: #4CAF50; color: white; padding: 5px 10px; text-decoration: none; }
+        .nav-bar { margin-bottom: 20px; }
+        .btn-dash { background-color: #008CBA; color: white; padding: 10px; text-decoration: none; }
     </style>
 </head>
 <body>
+    <div class="nav-bar">
+        {% if user.is_authenticated %}
+            <a href="{% url 'main:home' %}" class="btn-dash">&larr; Back to Dashboard</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn-dash">Login</a>
+        {% endif %}
+    </div>
+
     <h1>Tirian Trains Trip Schedule</h1>
     <table>
         <thead>
