@@ -2,6 +2,7 @@ from datetime import timedelta, date
 
 from django.db import models
 from django.core.validators import RegexValidator
+from django.contrib.auth.models import User
 
 ROUTE_TYPE = {
     'INT': 'Inter-town',
@@ -141,10 +142,11 @@ class Ticket(models.Model):
     date_booked = models.DateField(default=date.min)
     date_expiration = models.DateField(default=date.min)
     owner = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True)
+    booked_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     trips = models.ManyToManyField(Trip)
 
     def __str__(self):
-        return f'Ticket No. {self.pk} {self.date_booked} booked by {self.owner}'
+        return f'Ticket No. {self.pk} {self.date_booked} booked by {self.booked_by} for {self.owner}'
 
 
 class CrewMember(models.Model):
