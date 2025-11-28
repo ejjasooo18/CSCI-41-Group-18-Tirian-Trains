@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1>Book Your Ticket</h1>
+    <h3>Trip Details: {{ trip }}</h3>
+    <p>Price: {{ trip.route.price }} Lions</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <label>Given Name:</label><br>
+        <input type="text" name="given_name" required><br><br>
+
+        <label>Surname:</label><br>
+        <input type="text" name="surname" required><br><br>
+
+        <button type="submit">Confirm Purchase</button>
+    </form>
+</body>
+</html>

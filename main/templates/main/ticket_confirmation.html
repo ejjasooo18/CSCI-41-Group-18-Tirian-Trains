@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+    <h1 style="color: green;">Booking Confirmed!</h1>
+    <p><strong>Ticket ID:</strong> {{ ticket.id }}</p>
+    <p><strong>Passenger:</strong> {{ ticket.owner }}</p>
+    <p><strong>Cost:</strong> {{ ticket.total_cost }} Lions</p>
+    <p><strong>Trips:</strong></p>
+    <ul>
+        {% for trip in ticket.trips.all %}
+            <li>{{ trip }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'main:trip_list' %}">Back to Schedule</a>
+</body>
+</html>
