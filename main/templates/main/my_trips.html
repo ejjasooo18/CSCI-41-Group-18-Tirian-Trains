@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Trips</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .ticket-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; border-radius: 5px; box-shadow: 2px 2px 5px rgba(0,0,0,0.1); }
+        .back-link { display: inline-block; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <a href="{% url 'main:home' %}" class="back-link">&larr; Back to Dashboard</a>
+    <h1>My Trip History</h1>
+
+    {% for ticket in tickets %}
+        <div class="ticket-card">
+            <h3>Ticket #{{ ticket.id }}</h3>
+            <p><strong>Booked on:</strong> {{ ticket.date_booked }}</p>
+            <p><strong>Total Cost:</strong> {{ ticket.total_cost }} Lions</p>
+            <hr>
+            <h4>Itinerary:</h4>
+            <ul>
+                {% for trip in ticket.trips.all %}
+                    <li>
+                        <strong>{{ trip.trip_date }}:</strong> 
+                        {{ trip.origin.station_name }} ({{ trip.departure_time }}) &rarr; 
+                        {{ trip.destination.station_name }} ({{ trip.arrival_time }})
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% empty %}
+        <p>No ticket history found.</p>
+    {% endfor %}
+</body>
+</html>
