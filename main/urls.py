@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import RedirectView
 from . import views
 
 # from .views import (ThreadListView,
@@ -18,6 +19,9 @@ urlpatterns = [
     
     # View My Trips page
     path('my-trips/', views.my_trips, name='my_trips'),
+    
+    # Redirect the root URL to the login page
+    path('', RedirectView.as_view(pattern_name='login', permanent=False)),
 ]
 
 app_name = 'main'
