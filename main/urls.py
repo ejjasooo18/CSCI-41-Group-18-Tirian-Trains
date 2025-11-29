@@ -22,6 +22,9 @@ urlpatterns = [
     
     # Redirect the root URL to the login page
     path('', RedirectView.as_view(pattern_name='login', permanent=False)),
+    
+    # User Registration
+    path('register/', views.register, name='register'),
 ]
 
 app_name = 'main'

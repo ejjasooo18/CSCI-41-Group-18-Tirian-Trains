@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from .models import Trip, Ticket, Customer
 
 def trip_list(request):
@@ -105,3 +106,15 @@ def my_trips(request):
         tickets = Ticket.objects.filter(owner=customer).order_by('-date_booked')
 
     return render(request, 'main/my_trips.html', {'tickets': tickets})
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login') # Redirect to login page after successful registration
+    else:
+        form = UserCreationForm()
+    
+    return render(request, 'registration/register.html', {'form': form})
