@@ -31,6 +31,7 @@ class MaintenanceEventAdmin(admin.ModelAdmin):
 
 admin.site.register(Station)
 admin.site.register(Trip)
+admin.site.register(Route)
 admin.site.register(Customer, CustomerAdmin)
 admin.site.register(Ticket, TicketAdmin)
 admin.site.register(Train)
