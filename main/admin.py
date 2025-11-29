@@ -21,7 +21,7 @@ class CustomerAdmin(admin.ModelAdmin):
 
 
 class TicketAdmin(admin.ModelAdmin):
-    list_filter = ['owner', 'booked_by']
+    list_filter = ['passenger', 'booked_by']
     filter_horizontal = ['trips']
 
 
