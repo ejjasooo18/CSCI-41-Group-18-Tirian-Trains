@@ -32,20 +32,14 @@
                         {% csrf_token %}
                         
                         <div class="mb-3">
-                            <label class="form-label fw-bold text-secondary">Given Name</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light"><i class="bi bi-person"></i></span>
-                                <input type="text" name="given_name" class="form-control form-control-lg" placeholder="e.g. Peter" required>
-                            </div>
-                        </div>
+    <label class="form-label fw-bold text-secondary">Passenger Given Name</label>
+    <input type="text" name="given_name" value="{{ default_given }}" class="form-control form-control-lg" required>
+</div>
 
-                        <div class="mb-4">
-                            <label class="form-label fw-bold text-secondary">Surname</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light"><i class="bi bi-person-fill"></i></span>
-                                <input type="text" name="surname" class="form-control form-control-lg" placeholder="e.g. Pevensie" required>
-                            </div>
-                        </div>
+<div class="mb-4">
+    <label class="form-label fw-bold text-secondary">Passenger Surname</label>
+    <input type="text" name="surname" value="{{ default_surname }}" class="form-control form-control-lg" required>
+</div>
 
                         <div class="d-grid gap-2">
                             <button type="submit" class="btn btn-train btn-lg text-white shadow-sm">
