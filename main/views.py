@@ -51,40 +51,31 @@ def buy_ticket(request, trip_id):
 
 @login_required
 def home(request):
-    """
-    The Dashboard.
-    Displays: Hello {name}, Next Trip, and Action Buttons.
-    """
     user = request.user
     
-    # --- UPDATED LOGIC START ---
-    # Instead of matching First/Last names (which can be empty or mismatched),
-    # we simply find all tickets that are linked to your account via 'booked_by'.
+    # 1. Find tickets booked by user
     tickets = Ticket.objects.filter(booked_by=user)
-    # --- UPDATED LOGIC END ---
-
-    next_trip = None
     
-    # --- YOUR ORIGINAL LOGIC BELOW (Preserved) ---
-    # Look through all trips in those tickets, filter for future dates
     future_trips = []
     now = timezone.now().date()
     
+    # 2. Filter for future dates
     for ticket in tickets:
         for trip in ticket.trips.all():
             if trip.trip_date >= now:
                 future_trips.append(trip)
     
-    # Sort by date and pick the first one
+    # 3. Sort by date/time
     if future_trips:
-        # (I added 'departure_time' to the sort so it's even more accurate, 
-        # but the logic is the same as yours!)
         future_trips.sort(key=lambda x: (x.trip_date, x.departure_time))
-        next_trip = future_trips[0]
+        
+    # --- CHANGE IS HERE ---
+    # Instead of next_trip = future_trips[0], we take the top 3
+    upcoming_trips = future_trips[:3] 
 
     return render(request, 'main/home.html', {
         'user': user,
-        'next_trip': next_trip
+        'upcoming_trips': upcoming_trips # Pass the list, not just one
     })
 
 @login_required
