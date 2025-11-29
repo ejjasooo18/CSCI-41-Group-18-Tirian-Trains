@@ -13,40 +13,44 @@ def buy_ticket(request, trip_id):
     trip = get_object_or_404(Trip, pk=trip_id)
 
     if request.method == 'POST':
-        # get data from the HTML form
         given_name = request.POST.get('given_name')
         surname = request.POST.get('surname')
 
-        # 1. find or create the Customer
-        # we use get_or_create so we don't duplicate customers with the exact same name
+  
+        if request.user.is_authenticated:
+            request.user.first_name = given_name
+            request.user.last_name = surname
+            request.user.save() 
+
         customer, created = Customer.objects.get_or_create(
             given_name=given_name,
             surname=surname,
             defaults={
-                'middle_initial': 'X', # Placeholder
-                'gender': 'M',         # Placeholder
-                'birth_date': '2000-01-01' # Placeholder
+                'middle_initial': 'X', 
+                'gender': 'M',        
+                'birth_date': '2000-01-01'
             }
         )
 
-        # 2. calculate Cost (price comes from the route)
-        # note: our model has 'price' on Route, not trip.
         ticket_cost = trip.route.price if trip.route else 0
 
-        # 3. create the Ticket
         ticket = Ticket.objects.create(
             owner=customer,
             total_cost=ticket_cost,
             date_booked=timezone.now().date(),
-            date_expiration=timezone.now().date() # Placeholder expiration
+            date_expiration=timezone.now().date()
         )
 
-        # 4. link the Trip (many-to-many)
         ticket.trips.add(trip)
 
         return render(request, 'main/ticket_confirmation.html', {'ticket': ticket})
 
-    return render(request, 'main/buy_ticket.html', {'trip': trip})
+    context = {
+        'trip': trip,
+        'user_given_name': request.user.first_name,
+        'user_surname': request.user.last_name
+    }
+    return render(request, 'main/buy_ticket.html', context)
 
 @login_required
 def home(request):
