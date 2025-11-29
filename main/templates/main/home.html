@@ -1,43 +1,89 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard - Tirian Trains</title>
-    <style>
-        body { font-family: sans-serif; padding: 20px; text-align: center; }
-        .welcome-box { border: 2px solid #4CAF50; padding: 20px; border-radius: 10px; margin-bottom: 20px; }
-        .next-trip { background-color: #f9f9f9; padding: 15px; border-radius: 5px; margin: 20px auto; width: 50%; }
-        .action-btn { 
-            display: inline-block; padding: 15px 30px; margin: 10px; 
-            background-color: #008CBA; color: white; text-decoration: none; border-radius: 5px; font-size: 18px; 
-        }
-        .action-btn.buy { background-color: #4CAF50; }
-    </style>
-</head>
-<body>
-    <div class="welcome-box">
-        <h1>Hello, {{ user.first_name|default:user.username }}!</h1>
-        <p>Current Date: {% now "F j, Y" %}</p>
-    </div>
+{% extends 'base.html' %}
 
-    <!-- Next Trip Section -->
-    <div class="next-trip">
-        <h3>Your Next Trip</h3>
-        {% if next_trip %}
-            <p><strong>Date:</strong> {{ next_trip.trip_date }}</p>
-            <p><strong>Route:</strong> {{ next_trip.route }}</p>
-            <p><strong>Time:</strong> {{ next_trip.departure_time }}</p>
-        {% else %}
-            <p>You have no upcoming trips scheduled.</p>
-        {% endif %}
-    </div>
-
-    <!-- Action Buttons -->
-    <div>
-        <a href="{% url 'main:trip_list' %}" class="action-btn buy">Buy Tickets</a>
-        <a href="{% url 'main:my_trips' %}" class="action-btn">View Your Trips</a>
-    </div>
+{% block content %}
+<div class="container py-5">
     
-    <br>
-    <a href="{% url 'logout' %}">Logout</a>
-</body>
-</html>
+    <div class="row mb-4 align-items-end">
+        <div class="col-md-8">
+            <h1 class="display-5 fw-bold text-secondary">
+                Hello, {{ user.first_name|default:user.username }}! 👋
+            </h1>
+            <p class="text-muted lead mb-0">
+                Welcome back to Tirian Trains.
+            </p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            <div class="text-muted small">Current Date</div>
+            <div class="fw-bold fs-5 text-secondary">{% now "F j, Y" %}</div>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-5">
+        <div class="card-header bg-white border-bottom-0 pt-4 px-4">
+            <h4 class="fw-bold text-secondary mb-0">🚄 Your Next Trip</h4>
+        </div>
+        <div class="card-body p-4">
+            {% if next_trip %}
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h2 class="text-primary fw-bold mb-1">{{ next_trip.route }}</h2>
+                        <p class="text-muted fs-5 mb-0">
+                            Departing: <span class="fw-bold text-dark">{{ next_trip.departure_time }}</span>
+                        </p>
+                        <p class="text-muted small">Date: {{ next_trip.trip_date }}</p>
+                    </div>
+                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                        <span class="badge bg-success fs-6 px-3 py-2">Confirmed</span>
+                    </div>
+                </div>
+            {% else %}
+                <div class="text-center py-4">
+                    <p class="text-muted fs-5">You have no upcoming trips scheduled.</p>
+                    <p class="small text-muted">Ready to go somewhere new?</p>
+                    <a href="{% url 'main:trip_list' %}" class="btn btn-outline-primary mt-2">Find a Train</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <h4 class="fw-bold text-secondary mb-3">Quick Actions</h4>
+    <div class="row g-4">
+        <div class="col-md-6">
+            <a href="{% url 'main:trip_list' %}" class="text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm hover-card" style="transition: transform 0.2s;">
+                    <div class="card-body p-4 d-flex align-items-center">
+                        <div class="bg-warning bg-opacity-25 p-3 rounded me-3">
+                            <span class="fs-2">🎫</span> 
+                        </div>
+                        <div>
+                            <h5 class="fw-bold text-dark mb-1">Buy Tickets</h5>
+                            <p class="text-muted small mb-0">Browse schedules and book a seat.</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-md-6">
+            <a href="{% url 'main:my_trips' %}" class="text-decoration-none">
+                <div class="card h-100 border-0 shadow-sm" style="transition: transform 0.2s;">
+                    <div class="card-body p-4 d-flex align-items-center">
+                        <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                            <span class="fs-2">📂</span>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold text-dark mb-1">View Your Trips</h5>
+                            <p class="text-muted small mb-0">See your ticket history.</p>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+</div>
+
+<style>
+    .card:hover { transform: translateY(-3px); }
+</style>
+{% endblock %}
