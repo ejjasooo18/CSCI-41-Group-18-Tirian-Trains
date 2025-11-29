@@ -14,46 +14,72 @@
         </div>
         <div class="col-md-4 text-md-end">
             <div class="text-muted small">Current Date</div>
-            <div class="fw-bold fs-5 text-secondary">{% now "F j, Y" %}</div>
+            <div class="fw-bold fs-5 text-dark">{% now "F j, Y" %}</div>
         </div>
     </div>
 
     <div class="card border-0 shadow-sm mb-5">
         <div class="card-header bg-white border-bottom-0 pt-4 px-4">
-            <h4 class="fw-bold text-secondary mb-0">🚄 Your Next Trip</h4>
+            <h5 class="fw-bold text-secondary mb-0">
+                <i class="bi bi-train-front me-2"></i>Your Next Trip
+            </h5>
         </div>
+        
         <div class="card-body p-4">
             {% if next_trip %}
-                <div class="row align-items-center">
-                    <div class="col-md-8">
-                        <h2 class="text-primary fw-bold mb-1">{{ next_trip.route }}</h2>
-                        <p class="text-muted fs-5 mb-0">
-                            Departing: <span class="fw-bold text-dark">{{ next_trip.departure_time }}</span>
-                        </p>
-                        <p class="text-muted small">Date: {{ next_trip.trip_date }}</p>
+                <div class="d-flex align-items-center">
+                    
+                    <div class="text-center me-4 border rounded p-3 bg-light" style="min-width: 90px;">
+                        <div class="small fw-bold text-uppercase text-muted">{{ next_trip.trip_date|date:"M" }}</div>
+                        <div class="display-6 fw-bold text-dark lh-1">{{ next_trip.trip_date|date:"d" }}</div>
+                        <div class="small text-muted">{{ next_trip.trip_date|date:"D" }}</div>
                     </div>
-                    <div class="col-md-4 text-md-end mt-3 mt-md-0">
+
+                    <div class="flex-grow-1">
+                        <div class="d-flex align-items-center flex-wrap mb-2">
+                            <h3 class="fw-bold text-dark mb-0 me-3">
+                                {{ next_trip.route.source }}
+                            </h3>
+                            <i class="bi bi-arrow-right fs-4 text-muted me-3"></i>
+                            <h3 class="fw-bold text-dark mb-0">
+                                {{ next_trip.route.destination }}
+                            </h3>
+                        </div>
+
+                        <div class="d-flex align-items-center text-muted">
+                            <span class="badge bg-secondary bg-opacity-10 text-dark border me-3">
+                                {{ next_trip.route }}
+                            </span>
+                            <i class="bi bi-clock me-1"></i> 
+                            <span class="ms-1">Departing: <span class="fw-bold text-dark">{{ next_trip.departure_time|time:"g:i a" }}</span></span>
+                        </div>
+                    </div>
+                    
+                    <div class="ms-3 d-none d-md-block">
                         <span class="badge bg-success fs-6 px-3 py-2">Confirmed</span>
                     </div>
                 </div>
+
             {% else %}
-                <div class="text-center py-4">
-                    <p class="text-muted fs-5">You have no upcoming trips scheduled.</p>
-                    <p class="small text-muted">Ready to go somewhere new?</p>
-                    <a href="{% url 'main:trip_list' %}" class="btn btn-outline-primary mt-2">Find a Train</a>
+                <div class="text-center py-5">
+                    <h5 class="fw-normal text-secondary">You have no upcoming trips.</h5>
+                    <p class="text-muted small">Ready to go somewhere new?</p>
+                    <a href="{% url 'main:trip_list' %}" class="btn btn-outline-dark mt-2">
+                        Find a Train
+                    </a>
                 </div>
             {% endif %}
         </div>
     </div>
 
-    <h4 class="fw-bold text-secondary mb-3">Quick Actions</h4>
+    <h5 class="fw-bold text-secondary mb-3">Quick Actions</h5>
     <div class="row g-4">
         <div class="col-md-6">
             <a href="{% url 'main:trip_list' %}" class="text-decoration-none">
                 <div class="card h-100 border-0 shadow-sm hover-card" style="transition: transform 0.2s;">
                     <div class="card-body p-4 d-flex align-items-center">
                         <div class="bg-warning bg-opacity-25 p-3 rounded me-3">
-                            <span class="fs-2">🎫</span> 
+                             <i class="bi bi-ticket-perforated fs-2 text-warning text-opacity-75" style="color: #b35900;"></i>
                         </div>
                         <div>
                             <h5 class="fw-bold text-dark mb-1">Buy Tickets</h5>
@@ -66,10 +92,10 @@
 
         <div class="col-md-6">
             <a href="{% url 'main:my_trips' %}" class="text-decoration-none">
-                <div class="card h-100 border-0 shadow-sm" style="transition: transform 0.2s;">
+                <div class="card h-100 border-0 shadow-sm hover-card" style="transition: transform 0.2s;">
                     <div class="card-body p-4 d-flex align-items-center">
                         <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
-                            <span class="fs-2">📂</span>
+                            <i class="bi bi-folder2-open fs-2 text-primary"></i>
                         </div>
                         <div>
                             <h5 class="fw-bold text-dark mb-1">View Your Trips</h5>
@@ -84,6 +110,6 @@
 </div>
 
 <style>
-    .card:hover { transform: translateY(-3px); }
+    .hover-card:hover { transform: translateY(-3px); }
 </style>
 {% endblock %}
