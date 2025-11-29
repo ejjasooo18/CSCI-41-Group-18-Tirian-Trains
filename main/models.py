@@ -141,7 +141,7 @@ class Ticket(models.Model):
     total_cost = models.PositiveIntegerField(default=0)
     date_booked = models.DateField(default=date.min)
     date_expiration = models.DateField(default=date.min)
-    owner = models.ForeignKey(Customer, on_delete=models.CASCADE)
+    passenger = models.ForeignKey(Customer, on_delete=models.CASCADE)
     booked_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     trips = models.ManyToManyField(Trip)
 
