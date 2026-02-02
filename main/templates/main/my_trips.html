@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <div>
+            <h2 class="fw-bold text-secondary mb-1">My Purchase History</h2>
+            <p class="text-muted">Review your past purchase and receipts.</p>
+        </div>
+        <a href="{% url 'main:home' %}" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i> Back to Dashboard
+        </a>
+    </div>
+
+    <div class="row g-4">
+        {% for ticket in tickets %}
+        <div class="col-lg-6">
+            <div class="card shadow-sm border-0 h-100">
+                
+                <div class="card-header bg-white border-bottom-0 d-flex justify-content-between align-items-center pt-4 px-4">
+                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary">
+                        Ticket #{{ ticket.id }}
+                    </span>
+                    <span class="text-muted small">
+                        <i class="bi bi-calendar-check me-1"></i> Booked: {{ ticket.date_booked|date:"M d, Y" }}
+                    </span>
+                </div>
+
+                <div class="card-body px-4">
+                    
+                    <div class="d-flex align-items-center mb-3 pb-3 border-bottom">
+                        <div class="bg-light rounded-circle p-2 me-3">
+                            <i class="bi bi-person-fill text-secondary fs-4"></i>
+                        </div>
+                        <div>
+                            <div class="text-muted small text-uppercase" style="font-size: 0.7rem;">Passenger</div>
+                            <div class="fw-bold fs-5 text-dark">{{ ticket.owner.surname }}, {{ ticket.owner.given_name }}</div> 
+                        </div>
+                    </div>
+
+                    <h6 class="card-title fw-bold mb-3 text-secondary text-uppercase small">Itinerary</h6>
+                    
+                    <div class="list-group list-group-flush mb-3">
+                        {% for trip in ticket.trips.all %}
+                        <div class="list-group-item px-0 border-0">
+                            <div class="d-flex align-items-center">
+                                <div class="text-center me-3 border rounded p-2 bg-white shadow-sm" style="min-width: 70px;">
+                                    <div class="small fw-bold text-uppercase text-muted">{{ trip.trip_date|date:"M" }}</div>
+                                    <div class="fs-4 fw-bold text-dark lh-1">{{ trip.trip_date|date:"d" }}</div>
+                                </div>
+
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between mb-1">
+                                        <span class="fw-bold text-dark">{{ trip.route }}</span>
+                                    </div>
+                                    <div class="small text-muted d-flex align-items-center">
+                                        <i class="bi bi-clock me-2"></i>
+                                        <span>{{ trip.departure_time|time:"g:i a" }}</span>
+                                        <i class="bi bi-arrow-right mx-2 text-muted"></i>
+                                        <span>{{ trip.arrival_time|time:"g:i a" }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="card-footer bg-light border-top-0 d-flex justify-content-between align-items-center p-4">
+                    <div class="text-muted small text-uppercase">Total Paid</div>
+                    <div class="fw-bold fs-5 text-success">
+                        {{ ticket.total_cost }} Lions
+                    </div>
+                </div>
+            </div>
+            </div>
+
+        {% empty %}
+        
+        <div class="col-12 text-center py-5">
+            <div class="text-muted opacity-50 mb-3">
+                <i class="bi bi-ticket-perforated" style="font-size: 4rem;"></i>
+            </div>
+            <h4 class="text-secondary fw-normal">No ticket history found.</h4>
+            <p class="text-muted">You haven't booked any trips yet.</p>
+            <a href="{% url 'main:trip_list' %}" class="btn btn-train text-white mt-3">Book Your First Trip</a>
+        </div>
+
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

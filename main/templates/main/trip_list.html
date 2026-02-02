@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <div class="row align-items-center mb-4">
+        <div class="col-md-8">
+            <h2 class="fw-bold text-secondary mb-1">Trip Schedule</h2>
+            <p class="text-muted">Select a train to begin your journey.</p>
+        </div>
+        <div class="col-md-4 text-md-end">
+            {% if user.is_authenticated %}
+                <a href="{% url 'main:home' %}" class="btn btn-outline-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Dashboard
+                </a>
+            {% else %}
+                <a href="{% url 'login' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-person"></i> Login to Book
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 overflow-hidden">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="bg-light text-secondary">
+                        <tr>
+                            <th class="py-3 ps-4">Date</th>
+                            <th class="py-3">Time</th>
+                            <th class="py-3">Route</th>
+                            <th class="py-3">Train</th>
+                            <th class="py-3">Price</th>
+                            <th class="py-3 pe-4 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trip in trips %}
+                        <tr>
+                            <td class="ps-4 fw-bold text-secondary">
+                                {{ trip.trip_date }}
+                            </td>
+                            
+                            <td>
+                                <div class="d-flex flex-column">
+                                    <span class="fw-bold text-dark">{{ trip.departure_time }}</span>
+                                    <span class="small text-muted">Arrives: {{ trip.arrival_time }}</span>
+                                </div>
+                            </td>
+                            
+                            <td>
+                                <span class="fw-bold text-primary">{{ trip.route }}</span>
+                            </td>
+                            
+                            <td>
+                                <span class="badge bg-secondary bg-opacity-10 text-dark border">
+                                    {{ trip.assigned_train }}
+                                </span>
+                            </td>
+                            
+                            <td class="fw-bold text-success">
+                                {{ trip.route.price }} Lions
+                            </td>
+                            
+                            <td class="pe-4 text-end">
+                                <a href="{% url 'main:buy_ticket' trip.pk %}" class="btn btn-sm btn-train text-white px-4 py-2">
+                                    Buy Ticket
+                                </a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5">
+                                <div class="text-muted">
+                                    <span class="fs-1 d-block mb-3">🚉</span>
+                                    <h5>No trips scheduled yet.</h5>
+                                    <p class="small">Check the Admin panel to add routes!</p>
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

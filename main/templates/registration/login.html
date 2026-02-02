@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6 col-lg-4">
+        <div class="card p-4 shadow-sm"> <div class="card-body">
+                <div class="text-center mb-4">
+                    <h2 class="fw-bold text-secondary">Welcome Back</h2>
+                    <p class="text-muted">Please login to book your trip.</p>
+                </div>
+
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {{ form|crispy }}
+
+                    <div class="d-grid gap-2 mt-4">
+                        <button type="submit" class="btn btn-train btn-lg text-white">Login</button>
+                    </div>
+                </form>
+
+                <hr class="my-4">
+
+                <div class="text-center">
+                    <p class="small text-muted">Don't have an account?</p>
+                    <a href="{% url 'main:register' %}" class="btn btn-outline-secondary btn-sm w-100">Create New Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

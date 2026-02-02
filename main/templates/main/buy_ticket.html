@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container py-5">
+    
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-white border-bottom-0 pt-4 pb-0 px-4">
+                    <h2 class="fw-bold text-secondary">Book Your Ticket</h2>
+                    <p class="text-muted">Complete your passenger details below.</p>
+                </div>
+
+                <div class="card-body p-4">
+                    
+                    <div class="alert alert-light border d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                            <h6 class="fw-bold text-primary mb-1">Trip Details</h6>
+                            <small class="text-muted d-block" style="line-height: 1.4;">
+                                {{ trip }}
+                            </small>
+                        </div>
+                        <div class="text-end ps-3">
+                            <small class="text-muted d-block text-uppercase" style="font-size: 0.7rem;">Total Price</small>
+                            <span class="fs-3 fw-bold text-success">{{ trip.route.price }}</span>
+                            <span class="text-success small fw-bold">Lions</span>
+                        </div>
+                    </div>
+
+                    <form method="post">
+                        {% csrf_token %}
+                        
+                        <div class="mb-3">
+    <label class="form-label fw-bold text-secondary">Passenger Given Name</label>
+    <input type="text" name="given_name" value="{{ default_given }}" class="form-control form-control-lg" required>
+</div>
+
+<div class="mb-4">
+    <label class="form-label fw-bold text-secondary">Passenger Surname</label>
+    <input type="text" name="surname" value="{{ default_surname }}" class="form-control form-control-lg" required>
+</div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-train btn-lg text-white shadow-sm">
+                                Confirm Purchase <i class="bi bi-check-circle ms-2"></i>
+                            </button>
+                            <a href="{% url 'main:trip_list' %}" class="btn btn-outline-secondary">
+                                Cancel
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
